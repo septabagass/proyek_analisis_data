@@ -22,9 +22,8 @@ Melalui pertanyaan-pertanyaan tersebut, diharapkan dapat diperoleh insight menge
 
 ## Setup Environment
 
-### Menggunakan Anaconda
-
 ```bash
+### Menggunakan Anaconda
 conda create --name main-ds python=3.9
 conda activate main-ds
 pip install -r requirements.txt
