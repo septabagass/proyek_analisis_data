@@ -58,11 +58,25 @@ col2.metric("Rata rata Rental", int(filtered_df['cnt'].mean()))
 col3.metric("Max Rental", int(filtered_df['cnt'].max()))
 
 # 1. Tren Harian
-st.subheader("Tren Penyewaan Harian")
+st.subheader("Insight 1: Rush Hour vs Non Rush Hour (2012)")
 
-fig, ax = plt.subplots()
-ax.plot(filtered_df['dteday'], filtered_df['cnt'])
-st.pyplot(fig)
+data_2012 = hour_df[(hour_df['yr_label'] == 2012) & (hour_df['workingday'] == 1)].copy()
+
+def kategori_jam(jam):
+    if (7 <= jam <= 9) or (17 <= jam <= 19):
+        return 'rush_hour'
+    else:
+        return 'non_rush_hour'
+
+data_2012['kategori_jam'] = data_2012['hr'].apply(kategori_jam)
+
+rata2 = data_2012.groupby('kategori_jam')['registered'].mean()
+
+if 'rush_hour' in rata2 and 'non_rush_hour' in rata2:
+    rush = rata2['rush_hour']
+    non_rush = rata2['non_rush_hour']
+    persentase = ((rush - non_rush)/non_rush)*100
+    st.metric("Perbedaan (%)", f"{persentase:.2f}%")
 
 # 2. Casual vs Registered
 st.subheader("Casual vs Registered")
